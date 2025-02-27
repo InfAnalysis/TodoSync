@@ -5,14 +5,14 @@
 # 可选值: Category | Course
 # Category 表示按项目种类创建列表
 # Course 表示按课程创建列表
-ListNameMode : Course
+ListNameMode : Category
 # 若 ListNameMode 为 Course，则可指定创建 Todo 列表的模板
 # 可用的替换参数：
 # {course.name} -> 课程名
 # {course.coursecode} -> 课程代码（e.g.本-(2021-2022-2)-PHY1251-6-大学物理(A类）（1））
 # {course.coursecodeshort} -> 简化的课程代码（e.g.PHY1251）
 # {course.originalname} -> 原始课程名（你可以在 Canvas 上随意修改课程名，但改不掉原始课程名）
-ListNameTemplateForCourse : "{course.name}"
+ListNameTemplateForCourse : "Canvas - {course.name}"
 # Canvas 全局通知的 Todo 列表名称
 ListNameForNotification : "Canvas 通知"
 # 若 ListNameMode 为 Category，则可指定创建 Todo 列表的名称
@@ -23,7 +23,7 @@ ListNamesForCategory :
   AnouncementListName : "Canvas 公告"
 # 不处理 14 天前过期的项目
 # 如果你是在学期中开始使用本程序，建议设置为 true
-IgnoreTooOldItems : true
+IgnoreTooOldItems : false
 # 遇到错误，程序退出仍返回 0
 # 如果程序总是遇到完全可以忽略的错误，可以设置为 true，防止 GitHub 的邮件轰炸
 # 注：如果附件上传失败，无论 IgnoreErrors 为何值，程序都不会认为遇到了错误
