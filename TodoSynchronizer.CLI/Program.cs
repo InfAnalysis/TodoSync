@@ -185,8 +185,14 @@ class Program
             //headers.Add("Content-Type", "application/x-www-form-urlencoded");
             var forms = new List<KeyValuePair<string, string>>();
             forms.Add(new KeyValuePair<string, string>("client_id", "c133bd3b-da0e-4ec5-90e9-1cb173dcd60e"));
-            // Add client secret to the request
-            forms.Add(new KeyValuePair<string, string>("client_secret", "ryU8Q~6NewY1xHB0Pr41AAiKfq4xY_yDmuBr5a4w")); // Add your actual client secret
+            
+            // 从环境变量获取Client Secret并添加到请求中
+            string ClientSecret = Environment.GetEnvironmentVariable("GRAPH_CLIENT_SECRET");
+            if (!string.IsNullOrEmpty(ClientSecret))
+            {
+                forms.Add(new KeyValuePair<string, string>("client_secret", ClientSecret));
+            }
+            
             forms.Add(new KeyValuePair<string, string>("scope", "Tasks.ReadWrite User.Read offline_access"));
             forms.Add(new KeyValuePair<string, string>("refresh_token", graphtoken));
             forms.Add(new KeyValuePair<string, string>("grant_type", "refresh_token"));

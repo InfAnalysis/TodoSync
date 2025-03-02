@@ -131,7 +131,7 @@ namespace TodoSynchronizer.Helpers
         }
 
         // Add the client secret property
-        private static string ClientSecret = "ryU8Q~6NewY1xHB0Pr41AAiKfq4xY_yDmuBr5a4w"; // Replace with your actual client secret
+        private static string ClientSecret = Environment.GetEnvironmentVariable("GRAPH_CLIENT_SECRET"); // Replace with your actual client secret
 
         private static string ClientId = "c133bd3b-da0e-4ec5-90e9-1cb173dcd60e";
 
