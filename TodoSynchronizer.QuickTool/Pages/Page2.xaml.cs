@@ -68,7 +68,7 @@ namespace TodoSynchronizer.QuickTool.Pages
                 Message = "正在联系服务器获取信息...";
                 Task.Run(() => {
                     var forms = new List<KeyValuePair<string, string>>();
-                    forms.Add(new KeyValuePair<string, string>("client_id", "49694ef2-8751-4ac9-8431-8817c27350b4"));
+                    forms.Add(new KeyValuePair<string, string>("client_id", "c133bd3b-da0e-4ec5-90e9-1cb173dcd60e"));
                     forms.Add(new KeyValuePair<string, string>("scope", "Tasks.ReadWrite User.Read offline_access"));
                     forms.Add(new KeyValuePair<string, string>("redirect_uri", "http://localhost:65399"));
                     forms.Add(new KeyValuePair<string, string>("grant_type", "authorization_code"));
