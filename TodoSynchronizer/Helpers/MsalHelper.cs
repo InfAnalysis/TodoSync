@@ -86,7 +86,7 @@ namespace TodoSynchronizer.Helpers
         }
 
 
-        private static string ClientId = "49694ef2-8751-4ac9-8431-8817c27350b4";
+        private static string ClientId = "c133bd3b-da0e-4ec5-90e9-1cb173dcd60e";
 
         private static string Tenant = "common";
         private static string Instance = "https://login.microsoftonline.com/";
