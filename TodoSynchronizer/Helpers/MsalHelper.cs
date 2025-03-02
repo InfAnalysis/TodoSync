@@ -23,22 +23,67 @@ namespace TodoSynchronizer.Helpers
 
         public void CreateApplication()
         {
-            _clientApp = PublicClientApplicationBuilder.Create(ClientId)
-                                                    .WithAuthority($"{Instance}{Tenant}")
-                                                    .WithDefaultRedirectUri()
-                                                    //.WithBrokerPreview(true)
-                                                    .Build();
-            var storageProperties =
-                 new StorageCreationPropertiesBuilder(CacheFileName, CacheDir)
-                 //.WithUnprotectedFile()
-                 .Build();
+            // Check if we're using client credentials flow (with client secret)
+            if (!string.IsNullOrEmpty(ClientSecret))
+            {
+                // Create a confidential client application (for apps with client secret)
+                _confidentialClientApp = ConfidentialClientApplicationBuilder.Create(ClientId)
+                                                       .WithAuthority($"{Instance}{Tenant}")
+                                                       .WithClientSecret(ClientSecret)
+                                                       .WithRedirectUri("http://localhost")
+                                                       .Build();
+                
+                // Set up the token cache for the confidential client
+                var storageProperties =
+                     new StorageCreationPropertiesBuilder(CacheFileName, CacheDir)
+                     .Build();
 
-            var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
-            cacheHelper.RegisterCache(_clientApp.UserTokenCache);
+                var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
+                cacheHelper.RegisterCache(_confidentialClientApp.UserTokenCache);
+            }
+            else
+            {
+                // Create a public client application (for desktop/mobile apps without client secret)
+                _clientApp = PublicClientApplicationBuilder.Create(ClientId)
+                                                        .WithAuthority($"{Instance}{Tenant}")
+                                                        .WithDefaultRedirectUri()
+                                                        //.WithBrokerPreview(true)
+                                                        .Build();
+                
+                // Set up the token cache for the public client
+                var storageProperties =
+                     new StorageCreationPropertiesBuilder(CacheFileName, CacheDir)
+                     .Build();
+
+                var cacheHelper = MsalCacheHelper.CreateAsync(storageProperties).Result;
+                cacheHelper.RegisterCache(_clientApp.UserTokenCache);
+            }
         }
 
         public async Task<CommonResult> GetToken(Window host)
         {
+            // Use client credentials flow if we have a client secret
+            if (_confidentialClientApp != null)
+            {
+                try
+                {
+                    // Acquire token for application (client credentials flow)
+                    var result = await _confidentialClientApp.AcquireTokenForClient(scopes)
+                        .ExecuteAsync();
+
+                    return new CommonResult(true, result.AccessToken);
+                }
+                catch (MsalException ex)
+                {
+                    return new CommonResult(false, $"Error Acquiring Token:{System.Environment.NewLine}{ex}");
+                }
+                catch (Exception ex)
+                {
+                    return new CommonResult(false, $"Error:{System.Environment.NewLine}{ex}");
+                }
+            }
+            
+            // Continue with the existing interactive authorization code flow
             AuthenticationResult authResult = null;
             var app = PublicClientApp;
             IAccount firstAccount;
@@ -85,14 +130,18 @@ namespace TodoSynchronizer.Helpers
             }
         }
 
+        // Add the client secret property
+        private static string ClientSecret = "ryU8Q~6NewY1xHB0Pr41AAiKfq4xY_yDmuBr5a4w"; // Replace with your actual client secret
 
         private static string ClientId = "c133bd3b-da0e-4ec5-90e9-1cb173dcd60e";
 
         private static string Tenant = "consumers";
         private static string Instance = "https://login.microsoftonline.com/";
         private IPublicClientApplication _clientApp;
+        private IConfidentialClientApplication _confidentialClientApp; // For client credentials flow
 
         public IPublicClientApplication PublicClientApp { get { return _clientApp; } }
+        public IConfidentialClientApplication ConfidentialClientApp { get { return _confidentialClientApp; } }
 
         private static readonly string s_cacheFilePath =
                    Path.Combine(MsalCacheHelper.UserRootDirectory, "msal.contoso.cache");
