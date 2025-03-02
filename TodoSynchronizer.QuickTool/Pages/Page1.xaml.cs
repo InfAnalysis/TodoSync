@@ -32,7 +32,7 @@ namespace TodoSynchronizer.QuickTool.Pages
         {
             Button1.IsEnabled = false;
             DefaultOsBrowserWebUi webUi = new DefaultOsBrowserWebUi();
-            var res = await webUi.AcquireAuthorizationAsync(new Uri("https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=49694ef2-8751-4ac9-8431-8817c27350b4&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A65399&response_mode=query&scope=Tasks.ReadWrite%20User.Read%20offline_access&state=12345"), new Uri("http://localhost:65399"), new System.Threading.CancellationToken());
+            var res = await webUi.AcquireAuthorizationAsync(new Uri("https://login.microsoftonline.com/consumers/oauth2/v2.0/authorize?client_id=c133bd3b-da0e-4ec5-90e9-1cb173dcd60e&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A65399&response_mode=query&scope=Tasks.ReadWrite%20User.Read%20offline_access&state=12345"), new Uri("http://localhost:65399"), new System.Threading.CancellationToken());
             Debug.WriteLine(res);
             DataService.SetData("uri", res);
             NaviService.Navigate(new Page2());
