@@ -192,7 +192,7 @@ class Program
             FormUrlEncodedContent form = new FormUrlEncodedContent(forms);
 
             HttpClient client = new HttpClient();
-            var posttask = client.PostAsync("https://login.microsoftonline.com/common/oauth2/v2.0/token", form);
+            var posttask = client.PostAsync("https://login.microsoftonline.com/consumers/oauth2/v2.0/token", form);
             posttask.Wait();
             var refreshres = posttask.GetAwaiter().GetResult();
 
