@@ -12,7 +12,7 @@ ListNameMode : Course
 # {course.coursecode} -> 课程代码（e.g.本-(2021-2022-2)-PHY1251-6-大学物理(A类）（1））
 # {course.coursecodeshort} -> 简化的课程代码（e.g.PHY1251）
 # {course.originalname} -> 原始课程名（你可以在 Canvas 上随意修改课程名，但改不掉原始课程名）
-ListNameTemplateForCourse : "Canvas - {course.name}"
+ListNameTemplateForCourse : "{course.name}"
 # Canvas 全局通知的 Todo 列表名称
 ListNameForNotification : "Canvas 通知"
 # 若 ListNameMode 为 Category，则可指定创建 Todo 列表的名称
